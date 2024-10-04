@@ -8,7 +8,7 @@ end)
 
 require('mason').setup({})
 require('mason-lspconfig').setup({
-        ensure_installed = {'gopls', 'lua_ls', 'eslint', 'ruff', 'pyright', 'texlab', 'tsserver'},
+        ensure_installed = {'gopls', 'lua_ls', 'eslint', 'ruff', 'pyright', 'texlab', 'ts_ls'},
         handlers = {
                 lsp_zero.default_setup,
         },
