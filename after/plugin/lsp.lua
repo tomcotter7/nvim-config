@@ -16,7 +16,7 @@ require('mason-lspconfig').setup({
 
 -- local capabilities = require('cmp_nvim_lsp').default_capabilities()
 
-require('ts_ls').setup({})
+require('lspconfig').ts_ls.setup({})
 require('lspconfig').pyright.setup({})
 require('lspconfig').gopls.setup({})
 require('lspconfig').texlab.setup({})
