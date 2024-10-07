@@ -29,3 +29,11 @@ vim.opt.guicursor = "n-v-c:block,i-ci-ve:ver25,r-cr:hor20,o:hor50,a:blinkwait700
 vim.opt.splitright = true
 vim.opt.splitbelow = true
 
+vim.filetype.add({
+  pattern = {
+    ['Jenkinsfile'] = 'groovy',
+  },
+  extension = {
+    ['mojo'] = 'mojo'
+  },
+})

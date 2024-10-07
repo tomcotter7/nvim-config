@@ -14,6 +14,7 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup({
+    { "nvim-lua/plenary.nvim" },
     {
         "nvim-telescope/telescope.nvim",
         tag = "0.1.5",
@@ -48,11 +49,11 @@ require("lazy").setup({
     {
         "ThePrimeagen/refactoring.nvim",
         dependencies = {
-                "nvim-lua/plenary.nvim",
-                "nvim-treesitter/nvim-treesitter",
+          "nvim-lua/plenary.nvim",
+          "nvim-treesitter/nvim-treesitter",
         },
         config = function()
-                require("refactoring").setup()
+          require("refactoring").setup()
         end,
     },
     {"preservim/nerdtree"},
@@ -75,15 +76,4 @@ require("lazy").setup({
 
 vim.api.nvim_create_autocmd({"VimEnter"}, {
         command = "AirlineTheme molokai",
-})
-
-vim.api.nvim_create_autocmd({"BufRead", "BufNewFile", "BufEnter"}, {
-        pattern = "*.mojo",
-        callback = function ()
-            vim.api.nvim_buf_set_option(
-                vim.api.nvim_get_current_buf(),
-                "filetype",
-                "mojo"
-            )
-        end
 })

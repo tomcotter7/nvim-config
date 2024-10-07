@@ -8,7 +8,7 @@ end)
 
 require('mason').setup({})
 require('mason-lspconfig').setup({
-        ensure_installed = {'gopls', 'lua_ls', 'eslint', 'ruff', 'pyright', 'texlab', 'ts_ls'},
+        ensure_installed = {'gopls', 'lua_ls', 'eslint', 'ruff', 'pyright', 'texlab', 'ts_ls', 'groovyls'},
         handlers = {
                 lsp_zero.default_setup,
         },
@@ -16,6 +16,7 @@ require('mason-lspconfig').setup({
 
 -- local capabilities = require('cmp_nvim_lsp').default_capabilities()
 
+require('lspconfig').groovyls.setup({})
 require('lspconfig').ts_ls.setup({})
 require('lspconfig').pyright.setup({})
 require('lspconfig').gopls.setup({})
