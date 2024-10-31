@@ -56,8 +56,26 @@ require("lazy").setup({
           require("refactoring").setup()
         end,
     },
-    {"preservim/nerdtree"},
-    {"mbbill/undotree"},
+    -- {"preservim/nerdtree"},
+    {
+        "nvim-tree/nvim-tree.lua",
+        version = "*",
+        lazy = false,
+        dependencies = {
+            "nvim-tree/nvim-web-devicons",
+        },
+        config = function()
+            require("nvim-tree").setup({
+                filters = {
+                    dotfiles = true,
+                },
+            })
+        end,
+    },
+    {
+        "mbbill/undotree",
+        lazy = true
+    },
     {"tpope/vim-fugitive"},
     {'williamboman/mason.nvim'},
     {'williamboman/mason-lspconfig.nvim'},
@@ -68,10 +86,52 @@ require("lazy").setup({
     {'L3MON4D3/LuaSnip'},
     {
         "iamcco/markdown-preview.nvim",
+        lazy = true,
         cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
         ft = { "markdown" },
         build = function() vim.fn["mkdp#util#install"]() end,
-    }
+    },
+    -- {
+    --     'huggingface/llm.nvim',
+    --     config = function()
+    --         require('llm').setup({
+    --             api_token = "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",
+    --             model = "bigcode/starcoder2-15b",
+    --             backend = "huggingface",
+    --             url = nil,
+    --             tokens_to_clear = { "<|endoftext|>" },
+    --             request_body = {
+    --                 parameters = {
+    --                     max_new_tokens = 60,
+    --                     temperature = 0.2,
+    --                     top_p = 0.95,
+    --                 },
+    --             },
+    --             fim = {
+    --                 enabled = true,
+    --                 prefix = "<fim_prefix>",
+    --                 middle = "<fim_middle>",
+    --                 suffix = "<fim_suffix>",
+    --             },
+    --             debounce_ms = 150,
+    --             accept_keymap = "<C-j>",
+    --             dismiss_keymap = "<C-k>",
+    --             tls_skip_verify_insecure = false,
+    --             lsp = {
+    --                 bin_path = nil,
+    --                 host = nil,
+    --                 port = nil,
+    --                 cmd_env = nil,
+    --                 version = "0.5.3",
+    --             },
+    --             tokenizer = { repository = "bigcode/starcoder2-15b" },
+    --             context_window = 1024,
+    --             enable_suggestions_on_startup = true,
+    --             enable_suggestions_on_files = "*",
+    --             disable_url_path_completion = false,
+    --         })
+    --     end
+    -- },
 })
 
 vim.api.nvim_create_autocmd({"VimEnter"}, {
