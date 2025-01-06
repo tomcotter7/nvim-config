@@ -3,9 +3,9 @@ vim.opt.number = true
 vim.opt.relativenumber = true
 vim.opt.title = true
 
-vim.opt.tabstop = 4
-vim.opt.softtabstop = 4
-vim.opt.shiftwidth = 4
+vim.opt.tabstop = 2
+
+vim.opt.shiftwidth = 2
 vim.opt.expandtab = true
 vim.opt.smarttab = true
 vim.opt.autoindent = true
@@ -24,16 +24,14 @@ vim.opt.termguicolors = true
 
 vim.opt.updatetime = 300
 
-vim.opt.guicursor = "n-v-c:block,i-ci-ve:ver25,r-cr:hor20,o:hor50,a:blinkwait700-blinkoff400-blinkon250-Cursor/lCursor,sm:block-blinkwait175-blinkoff150-blinkon175"
+vim.opt.guicursor =
+"n-v-c:block,i-ci-ve:ver25,r-cr:hor20,o:hor50,a:blinkwait700-blinkoff400-blinkon250-Cursor/lCursor,sm:block-blinkwait175-blinkoff150-blinkon175"
 
 vim.opt.splitright = true
 vim.opt.splitbelow = true
 
 vim.filetype.add({
-  pattern = {
-    ['Jenkinsfile'] = 'groovy',
-  },
-  extension = {
-    ['mojo'] = 'mojo'
-  },
+    extension = {
+        ['mojo'] = 'mojo'
+    },
 })
