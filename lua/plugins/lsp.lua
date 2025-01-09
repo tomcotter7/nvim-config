@@ -35,6 +35,14 @@ return {
       }
     )
     vim.keymap.set("n", "gd", function() vim.lsp.buf.definition() end)
+    vim.keymap.set("n", "grr", function() vim.lsp.buf.references() end)
     vim.keymap.set("n", "K", function() vim.lsp.buf.hover() end)
+
+    vim.api.nvim_create_autocmd({ "BufWritePre" }, {
+      pattern = { "*.tf", "*.tfvars" },
+      callback = function()
+        vim.lsp.buf.format()
+      end,
+    })
   end,
 }
