@@ -31,6 +31,8 @@ local function create_floating_window(opts)
     style = "minimal",
     title = "fterm",
     title_pos = "center",
+    footer = "<Space>tf to close",
+    footer_pos = "left",
     border = "rounded",
   }
 
