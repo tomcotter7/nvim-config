@@ -37,4 +37,4 @@ end
 vim.api.nvim_create_user_command("Pomodoro", start_pomodoro, {
   nargs = "*"
 })
-vim.keymap.set("n", "<leader>pd", "<cmd>Pomodoro 60<cr>")
+vim.keymap.set("n", "<leader>pd", "<cmd>Pomodoro 55<cr>")
