@@ -8,7 +8,7 @@ return {
       }
     })
     require('mason-lspconfig').setup({
-      ensure_installed = { 'lua_ls', 'ruff', 'pyright', 'ts_ls', 'terraformls', 'texlab', 'groovyls' }
+      ensure_installed = { 'lua_ls', 'ruff', 'pyright', 'ts_ls', 'terraformls', 'texlab', 'groovyls', 'gopls' }
     })
     local lspconfig = require('lspconfig')
     lspconfig.ts_ls.setup({})
@@ -18,5 +18,14 @@ return {
     lspconfig.terraformls.setup({})
     lspconfig.texlab.setup({})
     lspconfig.groovyls.setup({})
+    lspconfig.gopls.setup({
+      settings = {
+        gopls = {
+          gofumpt = true,
+          completeUnimported = true,
+          hoverKind = "FullDocumentation"
+        }
+      }
+    })
   end
 }
