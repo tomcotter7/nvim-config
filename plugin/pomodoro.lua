@@ -43,13 +43,17 @@ local start_pomodoro = function(args)
   end))
 end
 
+local check_pomodoro = function(args)
+  if state.time_remaining == nil then
+    print("Pomodoro not started!")
+  else
+    print(string.format("Pomodoro: %s", state.time_remaining))
+  end
+end
+
 vim.api.nvim_create_user_command("Pomodoro", start_pomodoro, {
   nargs = "*"
 })
-
-local check_pomodoro = function(args)
-  print(string.format("Pomodoro: %s", state.time_remaining))
-end
-
 vim.api.nvim_create_user_command("PomodoroStatus", check_pomodoro, {})
+
 vim.keymap.set("n", "<leader>pd", "<cmd>Pomodoro 55<cr>")
