@@ -30,6 +30,9 @@ vim.opt.splitright = true
 vim.opt.splitbelow = true
 
 vim.filetype.add({
+  filename = {
+    ['requirements_dev.txt'] = 'requirements'
+  },
   extension = {
     ['mojo'] = 'mojo'
   },

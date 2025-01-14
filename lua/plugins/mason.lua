@@ -15,10 +15,17 @@ return {
     lspconfig.pyright.setup({})
     lspconfig.ruff.setup({})
     lspconfig.lua_ls.setup({})
-    lspconfig.terraformls.setup({})
-    lspconfig.texlab.setup({})
-    lspconfig.groovyls.setup({})
+    lspconfig.terraformls.setup({
+      autostart = false
+    })
+    lspconfig.texlab.setup({
+      autostart = false
+    })
+    lspconfig.groovyls.setup({
+      autostart = false
+    })
     lspconfig.gopls.setup({
+      autostart = false,
       settings = {
         gopls = {
           gofumpt = true,
