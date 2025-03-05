@@ -8,7 +8,7 @@ return {
     require('render-markdown').setup({
       render_modes = true,
       latex = {
-        enabled = true,
+        enabled = false,
         top_pad = 0,
         bottom_pad = 0,
       },
