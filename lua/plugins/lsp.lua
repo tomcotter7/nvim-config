@@ -46,5 +46,16 @@ return {
         vim.lsp.buf.format()
       end,
     })
+    vim.diagnostic.config({
+      float = {
+        border = "rounded",
+        source = true,
+        header = "",
+        prefix = "",
+      },
+      virtual_text = true,
+      severity_sort = false
+    })
+    vim.keymap.set('n', 'ge', vim.diagnostic.open_float)
   end,
 }
