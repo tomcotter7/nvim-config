@@ -8,7 +8,7 @@ return {
       }
     })
     require('mason-lspconfig').setup({
-      ensure_installed = { 'lua_ls', 'ruff', 'pyright', 'ts_ls', 'terraformls', 'texlab', 'groovyls', 'gopls', 'lemminx' }
+      ensure_installed = { 'lua_ls', 'ruff', 'pyright', 'ts_ls', 'gopls' } -- 'terraformls', 'texlab', 'groovyls', 'lemminx' }
     })
     require('mason-lspconfig').setup_handlers({
       function(server_name)
