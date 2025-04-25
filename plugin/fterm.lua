@@ -68,4 +68,4 @@ vim.api.nvim_create_autocmd("VimLeavePre", {
   callback = exit_handler
 })
 vim.api.nvim_create_user_command("FTerm", toggle_terminal, {})
-vim.keymap.set("n", "<leader>tf", toggle_terminal)
+vim.keymap.set({ "n" }, "<leader>tf", toggle_terminal)

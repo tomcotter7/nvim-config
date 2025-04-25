@@ -37,3 +37,5 @@ vim.filetype.add({
     ['mojo'] = 'mojo'
   },
 })
+
+vim.g.python3_host_prog = vim.fn.expand("~/.virtualenvs/molten/bin/python3.13")

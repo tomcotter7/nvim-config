@@ -1,5 +1,5 @@
 vim.g.mapleader = " "
-vim.g.maplocalleader = "\\"
+vim.g.maplocalleader = "§"
 
 
 vim.keymap.set("n", "<leader>spell", "<cmd>setlocal spell!<cr>")
