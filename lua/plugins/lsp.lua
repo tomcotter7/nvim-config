@@ -27,6 +27,13 @@ return {
       end,
     })
 
+    vim.lsp.config("lua_ls", {})
+    vim.lsp.config("ruff", {})
+    vim.lsp.config("pyright", {})
+    vim.lsp.config("ts_ls", {})
+    vim.lsp.config("gopls",
+      { settings = { gopls = { gofumpt = true, completeUnimported = true, hoverKind = "FullDocumentation" } } })
+
     vim.keymap.set("n", "gd", function() vim.lsp.buf.definition() end)
     vim.keymap.set("n", "grr", function() vim.lsp.buf.references() end)
     vim.keymap.set("n", "grn", function() vim.lsp.buf.rename() end)
