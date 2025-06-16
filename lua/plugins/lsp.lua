@@ -12,7 +12,6 @@ return {
     },
   },
   config = function()
-    require('lspconfig').mojo.setup({})
     vim.api.nvim_create_autocmd('LspAttach', {
       callback = function(args)
         local client = assert(vim.lsp.get_client_by_id(args.data.client_id))
@@ -27,9 +26,11 @@ return {
       end,
     })
 
+    require('lspconfig').mojo.setup({})
+
     vim.lsp.config("lua_ls", {})
     vim.lsp.config("ruff", {})
-    vim.lsp.config("pyright", {})
+    vim.lsp.config("basedpyright", {})
     vim.lsp.config("ts_ls", {})
     vim.lsp.config("gopls",
       { settings = { gopls = { gofumpt = true, completeUnimported = true, hoverKind = "FullDocumentation" } } })
