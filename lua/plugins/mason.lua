@@ -8,7 +8,7 @@ return {
       }
     })
     require('mason-lspconfig').setup({
-      ensure_installed = { 'lua_ls', 'ruff', 'basedpyright', 'ts_ls', 'gopls' },
+      ensure_installed = { 'lua_ls', 'ruff', 'pyright', 'ts_ls', 'gopls' },
     })
   end
 }
