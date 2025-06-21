@@ -53,10 +53,6 @@ local toggle_terminal = function()
 end
 
 local function exit_handler()
-  if vim.api.nvim_win_is_valid(state.floating.win) then
-    vim.api.nvim_win_hide(state.floating.win)
-  end
-
   if vim.api.nvim_buf_is_valid(state.floating.buf) and
       vim.bo[state.floating.buf].buftype == "terminal" then
     vim.api.nvim_buf_delete(state.floating.buf, { force = true })
@@ -64,8 +60,11 @@ local function exit_handler()
   end
 end
 
-vim.api.nvim_create_autocmd("VimLeavePre", {
-  callback = exit_handler
+vim.api.nvim_create_autocmd("ExitPre", {
+  callback = exit_handler,
+  desc = "Clean up floating terminal on nvim exit"
 })
+
+
 vim.api.nvim_create_user_command("FTerm", toggle_terminal, {})
 vim.keymap.set({ "n" }, "<leader>tf", toggle_terminal)
