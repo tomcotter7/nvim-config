@@ -30,7 +30,17 @@ return {
 
     vim.lsp.config("lua_ls", {})
     vim.lsp.config("ruff", {})
-    vim.lsp.config("pyright", {})
+    vim.lsp.config("basedpyright", {
+      settings = {
+        basedpyright = {
+          python = {
+            analysis = {
+              typeCheckingMode = "recommended"
+            }
+          }
+        }
+      }
+    })
     vim.lsp.config("ts_ls", {})
     vim.lsp.config("gopls",
       { settings = { gopls = { gofumpt = true, completeUnimported = true, hoverKind = "FullDocumentation" } } })
@@ -55,8 +65,10 @@ return {
         header = "",
         prefix = "",
       },
-      virtual_text = true,
-      severity_sort = false
+      virtual_text = {
+        severity = "ERROR"
+      },
+      severity_sort = true
     })
     vim.keymap.set('n', 'ge', vim.diagnostic.open_float)
   end,
