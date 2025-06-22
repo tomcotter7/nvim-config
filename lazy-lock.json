@@ -1,5 +1,5 @@
 {
-  "avante.nvim": { "branch": "main", "commit": "3033556d5bd09e51ecc08bcc755ef6091c459b2a" },
+  "avante.nvim": { "branch": "main", "commit": "6830f2d8b9986d5406f75fa14e725a9237456cd8" },
   "cmp-nvim-lsp": { "branch": "main", "commit": "a8912b88ce488f411177fc8aed358b04dc246d7b" },
   "harpoon": { "branch": "harpoon2", "commit": "ed1f853847ffd04b2b61c314865665e1dadf22c7" },
   "jupytext.nvim": { "branch": "main", "commit": "c8baf3ad344c59b3abd461ecc17fc16ec44d0f7b" },
@@ -25,5 +25,6 @@
   "vim-airline": { "branch": "master", "commit": "41c5f54507fd865c8c00fe1f4bb390a59b6894ef" },
   "vim-airline-themes": { "branch": "master", "commit": "0e976956eb674db8a6f72fae4dda6d1277433660" },
   "vim-fugitive": { "branch": "master", "commit": "593f831d6f6d779cbabb70a4d1e6b1b1936a88af" },
+  "vim-tidal": { "branch": "master", "commit": "e440fe5bdfe07f805e21e6872099685d38e8b761" },
   "vim-vsnip": { "branch": "master", "commit": "0a4b8419e44f47c57eec4c90df17567ad4b1b36e" }
 }
