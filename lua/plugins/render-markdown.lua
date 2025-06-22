@@ -4,17 +4,13 @@ return {
   ---@module 'render-markdown'
   ---@type render.md.UserConfig
   opts = {
-    file_types = { "markdown", "Avante" }
+    file_types = { "markdown", "Avante" },
+    render_modes = true,
+    latex = {
+      enabled = false,
+      top_pad = 0,
+      bottom_pad = 0
+    }
   },
   ft = { "markdown", "Avante" },
-  config = function()
-    require('render-markdown').setup({
-      render_modes = true,
-      latex = {
-        enabled = false,
-        top_pad = 0,
-        bottom_pad = 0,
-      },
-    })
-  end
 }

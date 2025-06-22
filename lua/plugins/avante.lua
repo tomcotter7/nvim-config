@@ -27,13 +27,16 @@ return {
     providers = {
       bedrock = bedrock_opts
     },
-  },
-  selector = {
-    provider = "telescope"
+    hints = {
+      enabled = false
+    },
+    selector = {
+      provider = "telescope"
+    }
   },
   dependencies = {
     "nvim-treesitter/nvim-treesitter",
     "nvim-lua/plenary.nvim",
     "MunifTanjim/nui.nvim"
-  }
+  },
 }
