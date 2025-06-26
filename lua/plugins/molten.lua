@@ -23,6 +23,8 @@ return {
     vim.keymap.set("n", "<localleader>ho", ":MoltenHideOutput<CR>",
       { silent = true, desc = "Molten (H)ide (O)utput" })
 
+    vim.api.nvim_set_hl(0, "MoltenCell", { bold = true })
+
     local imb = function(e)
       vim.schedule(function()
         local kernels = vim.fn.MoltenAvailableKernels()

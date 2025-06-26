@@ -6,11 +6,6 @@ return {
     { 'nvim-telescope/telescope-fzf-native.nvim', build = 'make' }
   },
   config = function()
-    require('telescope').setup({
-      extensions = {
-        fzf = {}
-      }
-    })
     require('telescope').load_extension('fzf')
     local telescope = require('telescope.builtin')
     vim.keymap.set("n", "<leader>gf", telescope.git_files, { desc = "(G)it Search (F)iles" })

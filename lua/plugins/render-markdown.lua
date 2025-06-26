@@ -8,9 +8,15 @@ return {
     render_modes = true,
     latex = {
       enabled = false,
-      top_pad = 0,
-      bottom_pad = 0
-    }
+    },
+    ignore = function(buf)
+      local buftype = vim.api.nvim_buf_get_option(buf, "buftype")
+      if buftype == "nofile" then
+        return true
+      end
+      return false
+    end
+
   },
   ft = { "markdown", "Avante" },
 }

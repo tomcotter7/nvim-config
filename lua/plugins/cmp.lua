@@ -9,9 +9,10 @@ return {
           vim.fn["vsnip#anonymous"](args.body)
         end,
       },
-      sources = {
-        { name = 'nvim_lsp' }
-      },
+      sources = cmp.config.sources({
+        { name = 'nvim_lsp' },
+        { name = "render-markdown" }
+      }),
       window = {
         completion = cmp.config.window.bordered(),
         documentation = cmp.config.window.bordered(),

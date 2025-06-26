@@ -58,6 +58,28 @@ return {
       end,
     })
 
+    local diagnostic_toggle_state = {
+      warnings_shown = false
+    }
+
+    local function ToggleDiagnosticWarnings()
+      if diagnostic_toggle_state.warnings_shown then
+        vim.diagnostic.config({
+          virtual_text = { severity = vim.diagnostic.severity.ERROR },
+          underline    = { severity = vim.diagnostic.severity.ERROR },
+          signs        = { severity = vim.diagnostic.severity.ERROR },
+        })
+        diagnostic_toggle_state.warnings_shown = false
+      else
+        vim.diagnostic.config({
+          virtual_text = { severity = { min = vim.diagnostic.severity.WARN } },
+          underline    = { severity = { min = vim.diagnostic.severity.WARN } },
+          signs        = { severity = { min = vim.diagnostic.severity.WARN } },
+        })
+        diagnostic_toggle_state.warnings_shown = true
+      end
+    end
+
     vim.diagnostic.config({
       float = {
         border = "rounded",
@@ -68,8 +90,14 @@ return {
       virtual_text = {
         severity = "ERROR"
       },
+      underline = {
+        severity = "ERROR"
+      },
       severity_sort = true
     })
     vim.keymap.set('n', 'ge', vim.diagnostic.open_float)
+
+    vim.keymap.set('n', 'gh', ToggleDiagnosticWarnings,
+      { noremap = true, silent = true, desc = "ToggleDiagnosticWarnings" })
   end,
 }
