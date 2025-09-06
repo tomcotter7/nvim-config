@@ -30,17 +30,7 @@ return {
 
     vim.lsp.config("lua_ls", {})
     vim.lsp.config("ruff", {})
-    vim.lsp.config("basedpyright", {
-      settings = {
-        basedpyright = {
-          python = {
-            analysis = {
-              typeCheckingMode = "recommended"
-            }
-          }
-        }
-      }
-    })
+    vim.lsp.config("ty", {})
     vim.lsp.config("ts_ls", {})
     vim.lsp.config("gopls",
       { settings = { gopls = { gofumpt = true, completeUnimported = true, hoverKind = "FullDocumentation" } } })
