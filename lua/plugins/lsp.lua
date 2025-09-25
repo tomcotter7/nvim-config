@@ -26,7 +26,7 @@ return {
       end,
     })
 
-    require('lspconfig').mojo.setup({})
+    vim.lsp.config("mojo", {})
 
     vim.lsp.config("lua_ls", {})
     vim.lsp.config("ruff", {})

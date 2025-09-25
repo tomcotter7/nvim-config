@@ -20,6 +20,7 @@ return {
   "yetone/avante.nvim",
   build = "make",
   event = "VeryLazy",
+  tag = "v0.0.27",
   version = false,
   ---@module 'avante'
   ---@type avante.Config
