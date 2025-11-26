@@ -1,7 +1,8 @@
 local ok, local_conf = pcall(require, "local.local_avante_config")
 
 local bedrock_opts = {
-  model = "us.anthropic.claude-sonnet-4-20250514-v1:0",
+  model = "global.anthropic.claude-opus-4-5-20251101-v1:0",
+  -- model = "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
   aws_profile = "",
   aws_region = "",
   is_env_set = function()
@@ -18,7 +19,6 @@ return {
   "yetone/avante.nvim",
   build = "make",
   event = "VeryLazy",
-  tag = "v0.0.27",
   version = false,
   ---@module 'avante'
   ---@type avante.Config
@@ -30,6 +30,7 @@ return {
     auto_suggestions_provider = "bedrock",
     behaviour = {
       auto_suggestions = false,
+      auto_approve_tool_permissions = false,
     },
     mode = "agentic",
     providers = {
@@ -42,8 +43,8 @@ return {
       provider = "telescope"
     },
     suggestion = {
-      debounce = 600,
-      throttle = 3000,
+      debounce = 0,
+      throttle = 10000,
     }
   },
   dependencies = {
