@@ -22,6 +22,8 @@ return {
       { silent = true, desc = "Molten Enter (O)utput or (S)how Output" })
     vim.keymap.set("n", "<localleader>ho", ":MoltenHideOutput<CR>",
       { silent = true, desc = "Molten (H)ide (O)utput" })
+    vim.keymap.set("n", "<localleader>mn", "<cmd>MoltenNext<cr>")
+    vim.keymap.set("n", "<localleader>mp", "<cmd>MoltenPrev<cr>")
 
     vim.api.nvim_set_hl(0, "MoltenCell", { bold = true })
 

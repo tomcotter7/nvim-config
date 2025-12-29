@@ -31,6 +31,7 @@ return {
     behaviour = {
       auto_suggestions = false,
       auto_approve_tool_permissions = false,
+      enable_fastapply = false,
     },
     mode = "agentic",
     providers = {

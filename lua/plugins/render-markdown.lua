@@ -15,8 +15,12 @@ return {
         return true
       end
       return false
-    end
+    end,
+    code = {
+      disable_background = true,
+      border = "thin",
+    }
 
   },
-  ft = { "markdown", "Avante" },
+  ft = { "markdown", "Avante" }
 }
