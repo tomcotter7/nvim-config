@@ -20,6 +20,7 @@ return {
   build = "make",
   event = "VeryLazy",
   version = false,
+  commit = "cf352f6f4653dddbac0980c06ca3f97554f80d80",
   ---@module 'avante'
   ---@type avante.Config
   opts = {
