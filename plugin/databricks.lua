@@ -1,90 +1,93 @@
-local state = {
-  databricks = {
-    path = "",
-    profile = "",
-  }
-}
+local sync_job_id = nil
 
-
-local function push_to_databricks()
-  if state.databricks.path == "" then
+local function start_databricks_sync()
+  if sync_job_id then
+    vim.notify("Databricks sync is already running", vim.log.levels.WARN)
     return
   end
 
-  local local_file = vim.fn.expand("%:p")
-  local remote_path = state.databricks.path
-
-  local on_upload = function(obj)
-    if obj.code == 0 then
-      vim.schedule(function()
-        vim.notify("Push to Databricks: " .. remote_path, vim.log.levels.INFO)
-      end)
-    else
-      vim.schedule(function()
-        vim.notify("Failed to push to Databricks: " .. obj.stderr, vim.log.levels.ERROR)
+  sync_job_id = vim.fn.jobstart({ "databricks", "bundle", "sync", "--watch" }, {
+    on_stdout = function(_, data)
+      if data and data[1] ~= "" then
+        vim.notify(table.concat(data, "\n"), vim.log.levels.INFO)
       end
-      )
-    end
-  end
+    end,
+    on_stderr = function(_, data)
+      if data and data[1] ~= "" then
+        vim.notify(table.concat(data, "\n"), vim.log.levels.ERROR)
+      end
+    end,
+    on_exit = function(_, exit_code)
+      sync_job_id = nil
+      if exit_code == 0 then
+        vim.notify("Databricks sync stopped", vim.log.levels.INFO)
+      else
+        vim.notify("Databricks sync exited with code: " .. exit_code, vim.log.levels.ERROR)
+      end
+    end,
+  })
 
-  local shell = os.getenv("SHELL") or "/bin/zsh"
-
-  local cmd = table.concat({
-    "databricks",
-    "workspace",
-    "import",
-    vim.fn.shellescape(remote_path),
-    "--file", vim.fn.shellescape(local_file),
-    "--overwrite",
-    "--format", "JUPYTER",
-    "--profile", vim.fn.shellescape(state.databricks.profile),
-  }, " ")
-
-  vim.system(
-    { shell, "-lc", cmd },
-    { text = true },
-    on_upload
-  )
-end
-
-local function set_databricks_path(path)
-  state.databricks.path = path
-end
-
-local function set_databricks_profile(profile)
-  state.databricks.profile = profile
-end
-
-vim.api.nvim_create_user_command("DatabricksSetProfile", function(opts)
-  set_databricks_profile(opts.args)
-end, { nargs = 1, desc = "Set Databricks Workspace Profile" })
-
-vim.api.nvim_create_user_command("DatabricksClearProfile", function()
-  set_databricks_profile("")
-end, { desc = "Clear Databricks Workspace Profile" })
-
-vim.api.nvim_create_user_command("DatabricksSetPath", function(opts)
-  set_databricks_path(opts.args)
-end, { nargs = 1, desc = "Set Databricks Workspace Path" })
-
-vim.api.nvim_create_user_command("DatabricksClearPath", function()
-  set_databricks_path("")
-end, { desc = "Clear Databricks Workspace Path" })
-
-vim.api.nvim_create_user_command("DatabricksPush", function()
-  push_to_databricks()
-end, { desc = "Manual Push To Databricks" })
-
-vim.api.nvim_create_user_command("DatabricksShowPath", function()
-  if state.databricks.path ~= "" then
-    vim.notify("Databricks path: " .. state.databricks.path, vim.log.levels.INFO, {})
+  if sync_job_id > 0 then
+    vim.notify("Databricks sync started", vim.log.levels.INFO)
   else
-    vim.notify("Databricks path not set", vim.log.levels.INFO)
+    sync_job_id = nil
+    vim.notify("Failed to start Databricks sync", vim.log.levels.ERROR)
   end
-end, {})
+end
 
+local function stop_databricks_sync()
+  if not sync_job_id then
+    vim.notify("No Databricks sync is running", vim.log.levels.WARN)
+    return
+  end
 
-vim.api.nvim_create_autocmd("BufWritePost", {
-  pattern = { "*.ipynb" },
-  callback = push_to_databricks
+  vim.fn.jobstop(sync_job_id)
+  sync_job_id = nil
+  vim.notify("Databricks sync stopped", vim.log.levels.INFO)
+end
+
+local function databricks_one_time_sync()
+  vim.notify("Starting one-time Databricks sync...", vim.log.levels.INFO)
+
+  vim.fn.jobstart({ "databricks", "bundle", "sync" }, {
+    on_stdout = function(_, data)
+      if data and data[1] ~= "" then
+        vim.notify(table.concat(data, "\n"), vim.log.levels.INFO)
+      end
+    end,
+    on_stderr = function(_, data)
+      if data and data[1] ~= "" then
+        vim.notify(table.concat(data, "\n"), vim.log.levels.ERROR)
+      end
+    end,
+    on_exit = function(_, exit_code)
+      if exit_code == 0 then
+        vim.notify("Databricks one-time sync completed", vim.log.levels.INFO)
+      else
+        vim.notify("Databricks one-time sync failed with code: " .. exit_code, vim.log.levels.ERROR)
+      end
+    end,
+  })
+end
+
+vim.api.nvim_create_user_command("DBStartSync", function()
+  start_databricks_sync()
+end, { desc = "Start Databricks Sync (Always On)" })
+
+vim.api.nvim_create_user_command("DBStopSync", function()
+  stop_databricks_sync()
+end, { desc = "Stop Databricks Sync" })
+
+vim.api.nvim_create_user_command("DBOneTimeSync", function()
+  databricks_one_time_sync()
+end, { desc = "Sync to Databricks One Time" })
+
+-- Stop sync when exiting Neovim
+vim.api.nvim_create_autocmd("VimLeavePre", {
+  callback = function()
+    if sync_job_id then
+      vim.fn.jobstop(sync_job_id)
+    end
+  end,
+  desc = "Stop Databricks sync on Neovim exit",
 })
