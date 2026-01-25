@@ -12,18 +12,21 @@ return {
   config = function()
     vim.keymap.set("n", "<localleader>mi", ":MoltenInit<CR>",
       { silent = true, desc = "(M)olten (I)nitialize" })
-    vim.keymap.set("n", "<localleader>el", ":MoltenEvaluateLine<CR>",
-      { silent = true, desc = "Molten (E)valuate (L)ine" })
-    vim.keymap.set("n", "<localleader>rc", ":MoltenReevaluateCell<CR>",
-      { silent = true, desc = "Molten (R)-evaluate (C)ell" })
+    -- vim.keymap.set("n", "<localleader>el", ":MoltenEvaluateLine<CR>",
+    --   { silent = true, desc = "Molten (E)valuate (L)ine" })
+    -- vim.keymap.set("n", "<localleader>rc", ":MoltenReevaluateCell<CR>",
+    --   { silent = true, desc = "Molten (R)-evaluate (C)ell" })
     vim.keymap.set("v", "<localleader>ev", ":<C-u>MoltenEvaluateVisual<CR>gv<Esc>",
       { silent = true, desc = "Molten (E)valute (V)isual" })
-    vim.keymap.set("n", "<localleader>os", ":noautocmd MoltenEnterOutput<CR>",
+    vim.keymap.set("n", "<localleader>so", ":noautocmd MoltenEnterOutput<CR>",
       { silent = true, desc = "Molten Enter (O)utput or (S)how Output" })
     vim.keymap.set("n", "<localleader>ho", ":MoltenHideOutput<CR>",
       { silent = true, desc = "Molten (H)ide (O)utput" })
-    vim.keymap.set("n", "<localleader>mn", "<cmd>MoltenNext<cr>")
-    vim.keymap.set("n", "<localleader>mp", "<cmd>MoltenPrev<cr>")
+    vim.keymap.set("n", "<localleader>nc", "<cmd>MoltenNext<cr>")
+    vim.keymap.set("n", "<localleader>pc", "<cmd>MoltenPrev<cr>")
+    vim.keymap.set("n", "<localleader>ec", "<Esc><cmd>call search('^```$')<CR>zzk")
+    vim.keymap.set({ "n", "i" }, "<localleader>cc",
+      "<Esc><cmd>call search('^```$')<CR>o<CR>```python<CR>```<Esc>0i<CR><Esc>k")
 
     vim.api.nvim_set_hl(0, "MoltenCell", { bold = true })
 
@@ -59,15 +62,6 @@ return {
       callback = function(e)
         if vim.api.nvim_get_vvar("vim_did_enter") ~= 1 then
           imb(e)
-        end
-      end,
-    })
-
-    vim.api.nvim_create_autocmd("BufWritePost", {
-      pattern = { "*.ipynb" },
-      callback = function()
-        if require("molten.status").initialized() == "Molten" then
-          vim.cmd("MoltenExportOutput!")
         end
       end,
     })
