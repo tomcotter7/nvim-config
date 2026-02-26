@@ -12,10 +12,6 @@ return {
   config = function()
     vim.keymap.set("n", "<localleader>mi", ":MoltenInit<CR>",
       { silent = true, desc = "(M)olten (I)nitialize" })
-    -- vim.keymap.set("n", "<localleader>el", ":MoltenEvaluateLine<CR>",
-    --   { silent = true, desc = "Molten (E)valuate (L)ine" })
-    -- vim.keymap.set("n", "<localleader>rc", ":MoltenReevaluateCell<CR>",
-    --   { silent = true, desc = "Molten (R)-evaluate (C)ell" })
     vim.keymap.set("v", "<localleader>ev", ":<C-u>MoltenEvaluateVisual<CR>gv<Esc>",
       { silent = true, desc = "Molten (E)valute (V)isual" })
     vim.keymap.set("n", "<localleader>so", ":noautocmd MoltenEnterOutput<CR>",

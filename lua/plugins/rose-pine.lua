@@ -3,7 +3,7 @@ return {
   name = "rose-pine",
   config = function()
     require("rose-pine").setup({
-      variant = "auto",
+      variant = "dawn",
       dark_variant = "moon",
       dim_inactive_windows = true
     })

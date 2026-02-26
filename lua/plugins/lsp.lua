@@ -35,7 +35,8 @@ return {
     })
     vim.lsp.config("ts_ls", {})
     vim.lsp.config("gopls",
-      { settings = { gopls = { gofumpt = true, completeUnimported = true, hoverKind = "FullDocumentation" } } })
+      { settings = { gopls = { gofumpt = true, completeUnimported = true, hoverKind = "FullDocumentation" } } }
+    )
 
     vim.keymap.set("n", "gd", function() vim.lsp.buf.definition() end)
     vim.keymap.set("n", "grr", function() vim.lsp.buf.references() end)

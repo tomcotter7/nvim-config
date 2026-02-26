@@ -2,7 +2,7 @@ vim.opt.filetype = "on"
 vim.opt.number = true
 vim.opt.relativenumber = true
 vim.opt.title = true
-vim.opt.mouse = "nv"
+vim.opt.mouse = "n"
 
 vim.opt.tabstop = 2
 vim.opt.shiftwidth = 2
