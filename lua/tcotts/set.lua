@@ -18,8 +18,6 @@ vim.opt.autoread = true
 
 vim.opt.spelllang = "en_gb"
 
-vim.opt.shellcmdflag = "-ic"
-
 vim.opt.termguicolors = true
 
 vim.opt.updatetime = 300

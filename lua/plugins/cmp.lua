@@ -11,7 +11,8 @@ return {
       },
       sources = cmp.config.sources({
         { name = 'nvim_lsp' },
-        { name = "render-markdown" }
+        { name = "render-markdown" },
+        { name = "minuet" },
       }),
       window = {
         completion = cmp.config.window.bordered({ border = "rounded" }),
