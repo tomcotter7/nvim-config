@@ -5,35 +5,8 @@ local state = {
 local sound_path = vim.fn.stdpath("config") .. "/plugin/pomodoro.mp3"
 
 local pomodoro_popup = function(args)
-  local height = math.floor(vim.o.lines * 0.25)
-  local width = math.floor(vim.o.columns * 0.25)
-  local buf = vim.api.nvim_create_buf(false, true)
-  local ascii_art = {
-    "╔═══════════════╗",
-    "║   Pomodoro!   ║",
-    "╚═══════════════╝",
-  }
-  local v_padding = math.floor((height - #ascii_art) / 2)
-  local h_padding = string.rep(" ", math.floor((width - vim.fn.strdisplaywidth(ascii_art[2])) / 2))
-  local lines = {}
-  for _ = 1, v_padding do
-    table.insert(lines, "")
-  end
-  for _, line in ipairs(ascii_art) do
-    table.insert(lines, h_padding .. line)
-  end
-  vim.api.nvim_buf_set_lines(buf, 0, -1, false, lines)
-  local win_config = {
-    relative = "editor",
-    width = width,
-    height = height,
-    col = math.floor((vim.o.columns - width) / 2),
-    row = math.floor((vim.o.lines - height) / 2),
-    style = "minimal",
-    border = "rounded"
-  }
-  vim.api.nvim_open_win(buf, true, win_config)
-  vim.fn.jobstart('paplay ' .. sound_path)
+  vim.fn.jobstart('afplay ' .. sound_path)
+  Snacks.notifier.notify("Pomodoro finished!", "info", { style = "fancy", timeout = 10000, title = "Pomodoro" })
 end
 
 local reset_pomodoro = function(args)
@@ -83,4 +56,4 @@ vim.api.nvim_create_user_command("Pomodoro", start_pomodoro, {
 vim.api.nvim_create_user_command("PomodoroStatus", check_pomodoro, {})
 vim.api.nvim_create_user_command("PomodoroReset", reset_pomodoro, {})
 
-vim.keymap.set("n", "<leader>pd", "<cmd>Pomodoro 55<cr>")
+vim.keymap.set("n", "<leader>pd", "<cmd>Pomodoro 25<cr>")

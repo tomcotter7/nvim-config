@@ -9,5 +9,7 @@ return {
     })
 
     vim.cmd("colorscheme rose-pine")
+    vim.api.nvim_set_hl(0, "DiffChange", { bg = "#f5dfe4" })
+    vim.api.nvim_set_hl(0, "DiffText", { bg = "#d7827e", fg = "#faf4ed", bold = true })
   end
 }
