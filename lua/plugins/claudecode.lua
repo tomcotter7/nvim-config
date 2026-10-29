@@ -1,3 +1,4 @@
+-- Maintained by Claude Code.
 return {
   "coder/claudecode.nvim",
   dependencies = { "folke/snacks.nvim" },
@@ -22,7 +23,7 @@ return {
               desc = "Go to previous window"
             },
             hide         = {
-              "<C-,>",
+              "<C-a>f",
               function(self) self:hide() end,
               mode = "t",
               desc = "Hide"
@@ -83,6 +84,34 @@ return {
         end, 150)
       end,
     })
+
+    -- Open diffs in the background: go back to the tab and window we were in.
+    vim.api.nvim_create_autocmd("User", {
+      pattern = "ClaudeCodeDiffOpened",
+      callback = function(args)
+        if not (args.data or {}).tab_number then return end
+        local prev_tab = vim.api.nvim_list_tabpages()[vim.fn.tabpagenr("#")]
+        vim.schedule(function()
+          if prev_tab and vim.api.nvim_tabpage_is_valid(prev_tab) then
+            vim.api.nvim_set_current_tabpage(prev_tab)
+          end
+        end)
+      end,
+    })
+
+    -- Claude's screen garbles after the terminal is hidden for a diff and shown
+    -- again (coder/claudecode.nvim#298). Send Ctrl-L so Claude redraws it.
+    vim.api.nvim_create_autocmd("User", {
+      pattern = "ClaudeCodeDiffClosed",
+      callback = function()
+        vim.defer_fn(function()
+          local bufnr = require("claudecode.terminal").get_active_terminal_bufnr()
+          if bufnr and vim.api.nvim_buf_is_valid(bufnr) then
+            pcall(vim.fn.chansend, vim.bo[bufnr].channel, "\12")
+          end
+        end, 300)
+      end,
+    })
   end,
   cmd = {
     "ClaudeCode",
@@ -101,9 +130,9 @@ return {
     "ClaudeCodeCloseAllDiffs",
   },
   keys = {
-    { "<leader>a",  nil,                              desc = "AI/Claude Code" },
+    { "<leader>a", nil,                              desc = "AI/Claude Code" },
     {
-      "<leader>ac",
+      "<C-a>c",
       function()
         local win = vim.api.nvim_get_current_win()
         local is_file = vim.bo.buftype == "" and vim.api.nvim_buf_get_name(0) ~= ""
@@ -125,32 +154,54 @@ return {
       end,
       desc = "Toggle Claude + set current file context"
     },
-    -- { "<leader>af", "<cmd>ClaudeCodeFocus<cr>",       desc = "Focus Claude" },
     {
-      "<leader>af",
+      "<C-a>f",
       function()
-        -- snapshot current state with `git stash create`
-        -- does a previous state exist? if so, run git diff <prev> <current>
-        -- send this diff to claude, with some text.
-        -- Can we send it directly to the prompt, without filling up the text box?
         vim.cmd("ClaudeCodeFocus")
         vim.cmd.startinsert()
       end,
       desc = "Focus Claude + Send Recent Change"
     },
-    { "<leader>ar", "<cmd>ClaudeCode --resume<cr>",   desc = "Resume Claude" },
-    { "<leader>aC", "<cmd>ClaudeCode --continue<cr>", desc = "Continue Claude" },
-    { "<leader>am", "<cmd>ClaudeCodeSelectModel<cr>", desc = "Select Claude model" },
-    { "<leader>ab", "<cmd>ClaudeCodeAdd %<cr>",       desc = "Add current buffer" },
-    { "<leader>as", "<cmd>ClaudeCodeSend<cr>",        mode = "v",                  desc = "Send to Claude" },
+    { "<C-a>r",    "<cmd>ClaudeCode --resume<cr>",   desc = "Resume Claude" },
+    { "<C-a>C",    "<cmd>ClaudeCode --continue<cr>", desc = "Continue Claude" },
+    { "<C-a>b",    "<cmd>ClaudeCodeAdd %<cr>",       desc = "Add current buffer" },
+    { "<C-a>s",    "<cmd>ClaudeCodeSend<cr>",        mode = "v",                 desc = "Send to Claude" },
     {
-      "<leader>as",
-      "<cmd>ClaudeCodeTreeAdd<cr>",
-      desc = "Add file",
-      ft = { "NvimTree", "neo-tree", "oil", "minifiles", "netrw", "snacks_picker_list" },
+      "<C-a>t",
+      function()
+        -- Save first so Claude reads the comments from disk.
+        if vim.bo.modified and vim.bo.buftype == "" then vim.cmd("write") end
+
+        local path = vim.fn.expand("%:.")
+        local locations = {}
+        for lnum, line in ipairs(vim.api.nvim_buf_get_lines(0, 0, -1, false)) do
+          if line:find("@claude", 1, true) then
+            table.insert(locations, path .. ":" .. lnum)
+          end
+        end
+
+        local prompt
+        if #locations > 0 then
+          prompt = "I left task(s) for you as @claude comments at: " .. table.concat(locations, ", ")
+              .. ". Do each task, then remove its @claude comment."
+        else
+          prompt = "I left task(s) for you as @claude comments in the code. Search the repo for them, "
+              .. "do each task, then remove its @claude comment."
+        end
+
+        -- Claude Code treats a burst of input as a paste, so a CR sent with the text
+        -- becomes a newline. Send the text, then send the CR on its own a moment later.
+        local terminal = require("claudecode.terminal")
+        if not terminal.send_to_terminal(prompt, { submit = false }) then return end
+        local bufnr = terminal.get_active_terminal_bufnr()
+        vim.defer_fn(function()
+          if bufnr and vim.api.nvim_buf_is_valid(bufnr) then
+            vim.fn.chansend(vim.bo[bufnr].channel, "\r")
+            vim.notify("Sent @claude task(s) to Claude")
+          end
+        end, 200)
+      end,
+      desc = "Send @claude tasks to Claude"
     },
-    -- Diff management
-    { "<leader>aa", "<cmd>ClaudeCodeDiffAccept<cr>", desc = "Accept diff" },
-    { "<leader>ad", "<cmd>ClaudeCodeDiffDeny<cr>",   desc = "Deny diff" },
   },
 }
