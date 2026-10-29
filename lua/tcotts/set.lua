@@ -16,6 +16,12 @@ vim.opt.ignorecase = true
 
 vim.opt.autoread = true
 
+vim.api.nvim_create_autocmd({ "FocusGained", "BufEnter", "WinEnter", "TermLeave" }, {
+  callback = function()
+    if vim.fn.getcmdwintype() == "" then vim.cmd("silent! checktime") end
+  end,
+})
+
 vim.opt.spelllang = "en_gb"
 
 vim.opt.termguicolors = true

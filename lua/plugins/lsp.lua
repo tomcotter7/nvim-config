@@ -31,6 +31,7 @@ return {
     vim.lsp.config("lua_ls", {})
     vim.lsp.config("ruff", {})
     vim.lsp.config("ty", {
+      root_markers = { ".venv", { "ty.toml", "pyproject.toml", "setup.py", "setup.cfg", "requirements.txt" }, ".git" },
       settings = { ty = { experimental = { rename = true } } }
     })
     vim.lsp.config("ts_ls", {})

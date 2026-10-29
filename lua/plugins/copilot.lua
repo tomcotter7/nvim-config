@@ -11,9 +11,14 @@ return {
         suggestion = {
           auto_trigger = true,
           keymap = {
-            accept = "<C-j>"
+            accept = "<C-j>",
+            accept_line = "<C-l>",
+            accept_word = "<C-w>",
           }
-        }
+        },
+        filetypes = {
+          ["*"] = true,
+        },
       })
     end
   }

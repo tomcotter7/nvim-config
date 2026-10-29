@@ -20,7 +20,9 @@ return {
       },
       codeRunner = {
         enabled = true,
-        default_method = "slime",
+        default_method = function(cell)
+          vim.fn["slime#send"](require("quarto.tools").concat(cell.text) .. "\n")
+        end,
       },
     })
 
@@ -41,8 +43,6 @@ return {
       "<Esc><cmd>call search('^```$')<CR>o<CR>```python<CR>```<Esc>0i<CR><Esc>k",
       { desc = "create new cell", silent = true })
 
-    -- jupytext opens .ipynb as a markdown buffer, so quarto never auto-activates.
-    -- Turn on otter LSP (completion + diagnostics) for python chunks in notebooks.
     vim.api.nvim_create_autocmd("BufEnter", {
       pattern = { "*.ipynb" },
       callback = function()
