@@ -5,7 +5,7 @@ return {
     vim.g.slime_default_config = { socket_name = "default", target_pane = ":.{right}" }
     vim.g.slime_dont_ask_default = 1
     vim.g.slime_bracketed_paste = 1
-    vim.g.slime_cell_delimiter = "# %%"
+    vim.g.slime_cell_delimiter = "^# %%"
   end,
   config = function()
     vim.keymap.set("v", "<localleader>r", "<Plug>SlimeRegionSend", { desc = "Send selection to REPL" })
