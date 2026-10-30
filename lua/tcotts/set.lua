@@ -1,4 +1,4 @@
-vim.opt.filetype = "on"
+vim.cmd("filetype on")
 vim.opt.number = true
 vim.opt.relativenumber = true
 vim.opt.title = true

@@ -33,11 +33,22 @@ local default_notebook = [[
 
 local function new_notebook(filename)
   local path = filename .. ".ipynb"
+  if vim.uv.fs_stat(path) then
+    vim.notify(path .. " already exists", vim.log.levels.ERROR)
+    return
+  end
   local file = io.open(path, "w")
   if file then
     file:write(default_notebook)
     file:close()
-    vim.cmd("edit " .. path)
+    -- Pair with a percent-format .py and edit that: saving the .ipynb through jupytext.nvim drops the pairing.
+    local ok, job = pcall(vim.system, { "jupytext", "--set-formats", "ipynb,py:percent", path })
+    if ok and job:wait().code == 0 then
+      vim.cmd.edit(filename .. ".py")
+    else
+      vim.notify("Could not pair " .. path .. " with jupytext", vim.log.levels.WARN)
+      vim.cmd.edit(path)
+    end
   else
     print("Error: Could not open new notebook file for writing.")
   end

@@ -5,31 +5,22 @@ return {
     output_extension = "md",
     force_ft = "markdown"
   },
-  -- opts = {
-  --   style = "percent",
-  --   output_extension = "py",
-  -- }
   config = function(_, opts)
     require("jupytext").setup(opts)
 
-    vim.api.nvim_create_user_command("JupytextSync", function()
-      local ipynb = vim.fn.expand("%:p")
-      if not ipynb:match("%.ipynb$") then
-        vim.notify("Not an .ipynb buffer", vim.log.levels.WARN)
-        return
-      end
-      vim.fn.jobstart({ "jupytext", "--sync", ipynb }, {
-        on_exit = function(_, code)
-          vim.schedule(function()
-            if code == 0 then
-              vim.cmd("edit")
-              vim.notify("Jupytext synced")
-            else
-              vim.notify("Jupytext sync failed", vim.log.levels.ERROR)
-            end
-          end)
-        end,
-      })
-    end, {})
+    -- Paired .py: push each save to its .ipynb. Only files with jupytext's header are paired.
+    vim.api.nvim_create_autocmd("BufWritePost", {
+      pattern = "*.py",
+      callback = function(ev)
+        local head = table.concat(vim.api.nvim_buf_get_lines(ev.buf, 0, 20, false), "\n")
+        if not head:find("jupytext:", 1, true) then return end
+        -- pcall: vim.system throws if jupytext is missing.
+        pcall(vim.system, { "jupytext", "--sync", ev.file }, { text = true }, function(res)
+          if res.code ~= 0 then
+            vim.schedule(function() vim.notify("Jupytext sync failed: " .. res.stderr, vim.log.levels.ERROR) end)
+          end
+        end)
+      end,
+    })
   end,
 }
