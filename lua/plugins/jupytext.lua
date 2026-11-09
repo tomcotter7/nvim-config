@@ -16,9 +16,14 @@ return {
         if not head:find("jupytext:", 1, true) then return end
         -- pcall: vim.system throws if jupytext is missing.
         pcall(vim.system, { "jupytext", "--sync", ev.file }, { text = true }, function(res)
-          if res.code ~= 0 then
-            vim.schedule(function() vim.notify("Jupytext sync failed: " .. res.stderr, vim.log.levels.ERROR) end)
-          end
+          vim.schedule(function()
+            if res.code ~= 0 then
+              vim.notify("Jupytext sync failed: " .. res.stderr, vim.log.levels.ERROR)
+            elseif vim.api.nvim_buf_is_valid(ev.buf) then
+              -- jupytext touches the .py's mtime; recheck now so autoread reloads it quietly.
+              vim.cmd.checktime(ev.buf)
+            end
+          end)
         end)
       end,
     })
